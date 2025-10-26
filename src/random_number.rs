@@ -34,6 +34,7 @@ macro_rules! impl_randomizable_int {
 		}
 	};
 }
+impl_randomizable_int!(usize);
 impl_randomizable_int!(u64);
 impl_randomizable_int!(u32);
 impl_randomizable_int!(u16);
