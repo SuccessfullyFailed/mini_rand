@@ -3,7 +3,7 @@ use crate::generate_random_u64;
 
 
 
-pub trait Randomizable:Sized {
+pub trait RandomNumber:Sized {
 	
 	/// Get a random value.
 	fn random() -> Self;
@@ -17,54 +17,56 @@ pub trait Randomizable:Sized {
 /* INTEGER IMPLEMENTATIONS */
 
 macro_rules! impl_randomizable_int {
-	($($type:ty),*) => {
-		$(
-			impl Randomizable for $type {
-		
-				/// Get a random value.
-				fn random() -> Self {
-					Self::random_range(<$type>::MIN..<$type>::MAX)
-				}
-
-				/// Get a random value between the given values.
-				fn random_range(range:Range<Self>) -> Self {
-					range.start + ((generate_random_u64() as $type) % (range.end - range.start))
-				}
+	($type:ty) => {
+		impl RandomNumber for $type {
+	
+			/// Get a random value.
+			fn random() -> Self {
+				<$type>::random_range(<$type>::MIN..<$type>::MAX)
 			}
-		)*
+
+			/// Get a random value between the given values.
+			fn random_range(range:Range<Self>) -> Self {
+				let available_range_size:$type = range.end - range.start;
+				let seed:$type = generate_random_u64() as $type;
+				range.start + (seed % available_range_size)
+			}
+		}
 	};
 }
-impl_randomizable_int!(u64, i64, u32, i32, u16, i16, u8, i8);
+impl_randomizable_int!(u64);
+impl_randomizable_int!(u32);
+impl_randomizable_int!(u16);
+impl_randomizable_int!(u8);
 
 
 
 /* FLOAT IMPLEMENTATIONS */
 
 macro_rules! impl_randomizable_float {
-	($type:ty, $seed_type:ty) => {
-		impl Randomizable for $type {
+	($type:ty) => {
+		impl RandomNumber for $type {
 
 			/// Get a random value.
 			fn random() -> Self {
-				Self::random_range(<$type>::MIN..<$type>::MAX)
+				(u32::random() as $type) / (u32::MAX as $type) * <$type>::MAX
 			}
 
 			/// Get a random value between the given values.
 			fn random_range(range:Range<Self>) -> Self {
-				let random_fact:$type = (<$seed_type>::random() as $type) / ((<$seed_type>::MAX as $type) + 1.0);
-				range.start + (random_fact * (range.end - range.start))
+				range.start + ((u32::random() as $type) / (u32::MAX as $type) * (range.end - range.start))
 			}
 		}
 	};
 }
-impl_randomizable_float!(f64, u64);
-impl_randomizable_float!(f32, u32);
+impl_randomizable_float!(f64);
+impl_randomizable_float!(f32);
 
 
 
 /* OTHER TYPE IMPLEMENTATIONS */
 
-impl Randomizable for bool {
+impl RandomNumber for bool {
 
 	/// Get a random value.
 	fn random() -> Self {
@@ -77,7 +79,7 @@ impl Randomizable for bool {
 	}
 }
 
-impl Randomizable for Duration {
+impl RandomNumber for Duration {
 
 	/// Get a random value.
 	fn random() -> Self {
@@ -90,7 +92,7 @@ impl Randomizable for Duration {
 	}
 }
 
-impl Randomizable for char {
+impl RandomNumber for char {
 
 	/// Get a random value.
 	fn random() -> Self {
