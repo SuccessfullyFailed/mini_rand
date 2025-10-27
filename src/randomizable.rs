@@ -15,7 +15,7 @@ impl<T:RandomNumber> Randomizable<T> for Range<T> {
 		T::random_range(self)
 	}
 }
-impl<T:RandomNumber> Randomizable<T> for T {
+impl<T> Randomizable<T> for T {
 
 	/// Get a value.
 	fn randomizable_value(self) -> T {

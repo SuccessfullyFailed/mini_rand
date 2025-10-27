@@ -23,4 +23,12 @@ mod test_helpers {
 		assert_eq!(random_numbers.len(), 1, "Numbers weren't all the same");
 		assert_eq!(random_numbers[0], SAMPLE_NUMBER, "Found number is somehow wrong");
 	}
+
+	#[test]
+	fn test_unimplemented_type() {
+		#[derive(PartialEq, Debug)]
+		struct CustomStruct(i8);
+
+		assert_eq!(CustomStruct(10).randomizable_value(), CustomStruct(10));
+	}
 }
