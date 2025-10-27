@@ -5,15 +5,15 @@ use crate::RandomNumber;
 pub trait RandomChoice<T> {
 
 	/// Choose a random option from a list.
-	fn choose(&self) -> Option<&T>;
+	fn choose_random(&self) -> Option<&T>;
 
 	/// Choose a mutable random option from a list.
-	fn choose_mut(&mut self) -> Option<&mut T>;
+	fn choose_random_mut(&mut self) -> Option<&mut T>;
 }
 impl<T> RandomChoice<T> for Vec<T> {
 
 	/// Choose a random option from a list.
-	fn choose(&self) -> Option<&T> {
+	fn choose_random(&self) -> Option<&T> {
 		if self.is_empty() {
 			None
 		} else {
@@ -22,7 +22,7 @@ impl<T> RandomChoice<T> for Vec<T> {
 	}
 
 	/// Choose a mutable random option from a list.
-	fn choose_mut(&mut self) -> Option<&mut T> {
+	fn choose_random_mut(&mut self) -> Option<&mut T> {
 		if self.is_empty() {
 			None
 		} else {
@@ -34,7 +34,7 @@ impl<T> RandomChoice<T> for Vec<T> {
 impl<T, const U:usize> RandomChoice<T> for [T; U] {
 
 	/// Choose a random option from a list.
-	fn choose(&self) -> Option<&T> {
+	fn choose_random(&self) -> Option<&T> {
 		if self.is_empty() {
 			None
 		} else {
@@ -43,7 +43,7 @@ impl<T, const U:usize> RandomChoice<T> for [T; U] {
 	}
 
 	/// Choose a mutable random option from a list.
-	fn choose_mut(&mut self) -> Option<&mut T> {
+	fn choose_random_mut(&mut self) -> Option<&mut T> {
 		if self.is_empty() {
 			None
 		} else {
