@@ -62,14 +62,14 @@ mod test_generator {
 	fn print_test_code() {
 
 		// Make sure this function was specifically activated.
-		sleep(Duration::from_millis(500));
+		sleep(Duration::from_millis(10));
 		if !*RUNNING_SPECIFICALLY_TEST_GENERATOR.lock().unwrap() {
 			return;
 		}
 
 		// Create all required tests.
 		let mut tests:Vec<Vec<String>> = Vec::new();
-		for type_name in ["u64", "u32", "u16"] {
+		for type_name in ["u128", "u64", "u32", "u16", "i128", "i64", "i32", "i16"] {
 			tests.push(vec![
 				format!("fn test_{type_name}_not_the_same() {{ test_not_the_same::<{type_name}>() }}"),
 				format!("fn test_{type_name}_not_the_same_multi_threaded() {{ test_not_the_same_multi_threaded::<{type_name}>() }}"),
@@ -112,6 +112,16 @@ mod generated_tests {
 	use super::test_helpers::*;
 
 	#[test]
+	fn test_u128_not_the_same() { test_not_the_same::<u128>() }
+	#[test]
+	fn test_u128_not_the_same_multi_threaded() { test_not_the_same_multi_threaded::<u128>() }
+	#[test]
+	fn test_u128_distribution() { test_distribution::<u128>(u128::MAX / 2, 0.35..0.65) }
+	#[test]
+	fn test_u128_within_range() { test_within_range::<u128>(50..100) }
+
+
+	#[test]
 	fn test_u64_not_the_same() { test_not_the_same::<u64>() }
 	#[test]
 	fn test_u64_not_the_same_multi_threaded() { test_not_the_same_multi_threaded::<u64>() }
@@ -139,4 +149,44 @@ mod generated_tests {
 	fn test_u16_distribution() { test_distribution::<u16>(u16::MAX / 2, 0.35..0.65) }
 	#[test]
 	fn test_u16_within_range() { test_within_range::<u16>(50..100) }
+
+
+	#[test]
+	fn test_i128_not_the_same() { test_not_the_same::<i128>() }
+	#[test]
+	fn test_i128_not_the_same_multi_threaded() { test_not_the_same_multi_threaded::<i128>() }
+	#[test]
+	fn test_i128_distribution() { test_distribution::<i128>(i128::MAX / 2, 0.35..0.65) }
+	#[test]
+	fn test_i128_within_range() { test_within_range::<i128>(50..100) }
+
+
+	#[test]
+	fn test_i64_not_the_same() { test_not_the_same::<i64>() }
+	#[test]
+	fn test_i64_not_the_same_multi_threaded() { test_not_the_same_multi_threaded::<i64>() }
+	#[test]
+	fn test_i64_distribution() { test_distribution::<i64>(i64::MAX / 2, 0.35..0.65) }
+	#[test]
+	fn test_i64_within_range() { test_within_range::<i64>(50..100) }
+
+
+	#[test]
+	fn test_i32_not_the_same() { test_not_the_same::<i32>() }
+	#[test]
+	fn test_i32_not_the_same_multi_threaded() { test_not_the_same_multi_threaded::<i32>() }
+	#[test]
+	fn test_i32_distribution() { test_distribution::<i32>(i32::MAX / 2, 0.35..0.65) }
+	#[test]
+	fn test_i32_within_range() { test_within_range::<i32>(50..100) }
+
+
+	#[test]
+	fn test_i16_not_the_same() { test_not_the_same::<i16>() }
+	#[test]
+	fn test_i16_not_the_same_multi_threaded() { test_not_the_same_multi_threaded::<i16>() }
+	#[test]
+	fn test_i16_distribution() { test_distribution::<i16>(i16::MAX / 2, 0.35..0.65) }
+	#[test]
+	fn test_i16_within_range() { test_within_range::<i16>(50..100) }
 }
